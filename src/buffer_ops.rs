@@ -193,4 +193,14 @@ impl Editor {
         self.mode = Mode::Insert;
         self.assert_invariants();
     }
+    pub fn selection_range(&self) -> Option<(Position, Position)> {
+        let anchor = self.selection_anchor.as_ref()?;;
+        let cursor = &self.cursor;
+        let (start, end) = if (anchor.row, anchor.col) <= (cursor.row, cursor.col) {
+            (anchor.clone(), cursor.clone())
+        } else {
+            (cursor.clone(), anchor.clone())
+        };
+        Some((start, end))
+    }
 }
